@@ -4,12 +4,11 @@
 #include <avr/sleep.h>
 #include "Consumo.h"
 
-void Su_inicie_uart(uint16_t ubrr, Comunicacion *com)
+void Su_inicie_uart(uint16_t ubrr)
 {
     UBRR0L = (uint8_t)(ubrr & 0xFF);                // Configuracion de la tasa a 9600
     UBRR0H = (uint8_t)(ubrr >> 8);                  //
     UCSR0B |= (1 << RXEN0) | (1 << TXEN0);          // se enciende la recepcion y transmision
-    com->estado=ESTADO0;                            //inicializacion de estados
 }
 
 char Su_Hubo_Tecla_Serial(Comunicacion *tec_enable){

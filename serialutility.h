@@ -33,7 +33,7 @@ extern "C" {
 		char tecla;
 		char teclado_enable;
 	};
-	void Su_inicie_uart(uint16_t ubrr, Comunicacion *com);	// Inicializa lo que se necesite
+	void Su_inicie_uart(uint16_t ubrr);	// Inicializa lo que se necesite
 															// Para comunicacion serial.
 	void Su_Atencion_Bajo_Consumo(Comunicacion *com);		// Se configura el bajo consumo
 	char Su_Hubo_Tecla_Serial(Comunicacion *tec_enable);	// Revisa si se ha recibido y si se

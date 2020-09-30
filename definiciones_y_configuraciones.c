@@ -1,4 +1,4 @@
-#include "display.h"
+#include "funciones.h"
 #include "definiciones_y_configuraciones.h"
 #include <avr/io.h>
 
@@ -18,9 +18,25 @@ short leaADC(){
 	return adcval;
 }
 
-void DyC_Procese_ADC(int8_t *temperatura,int8_t *tempUnidades,int8_t *tempDecenas,int8_t *tempUnidadesD,int8_t *tempUnidadesC,int8_t *tempDecenasD,int8_t *tempDecenasC,int8_t *banderaADC)
-{
-	*banderaADC=0;                              //Se apaga la banderaADC
+void DyC_Procese_ADC(short SALIDA, coef_iir_2_ord *ir, long *sal, float *saliir){
 	short adcval= leaADC();                     //Lectura del ADC
+	void DyC_Filtrar(SALIDA, adcval, &ir, &sal, &saliir);
 }
 
+void DyC_Filtrar(short SALIDA, short adcval, coef_iir_2_ord *ir, long *sal, float *saliir ){
+    switch (SALIDA)
+    {
+      case FIR1:
+        sal = filtrarFIR1((int)adcval);
+        break;
+      case FIR2:
+        sal = filtrarFIR2((int)adcval);
+        break;
+      case FIR3:
+        sal = filtrarFIR3((int)adcval);
+        break;
+      case IIR:
+        saliir = filtrarIIR((float)adcval, &ir);
+        break;
+    }
+}
