@@ -16,7 +16,6 @@ uint8_t banderaADC=0;
 
 short SALIDA FIR1 // Seleccione FIR1,FIR2,FIR3, o IIR ver funciones.h
 
-
 /*****Variables globales del filtro IIR*****/
 coef_iir_2_ord ir;/*esta estructura debe ser global y se va a pasar por referencia a la funcion que la inicializa*/
 
