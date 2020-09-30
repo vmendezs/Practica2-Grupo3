@@ -2,7 +2,7 @@
 #include "definiciones_y_configuraciones.h"
 #include <avr/io.h>
 
-void DyC_inicialice_ADC(int8_t *banderaADC)
+void DyC_inicialice_ADC()
 {
 	ADMUX = 0x00;
 	ADCSRA = 0x00;
@@ -11,13 +11,6 @@ void DyC_inicialice_ADC(int8_t *banderaADC)
 	ADMUX |= 0b11000000;  //REF 1.1V, 0b11000000
 	ADCSRA |= 0b10101111; //preescalización de 128 (1 << ADEN)(1 << ADATE)(1 << ADIE)(1 << ADPS2)(1 << ADPS1)
 	ADCSRB |= 0b00000011; // Trigger Timer/Counter0 Compare Match A
-	*banderaADC= 0;       //inicializa banderaADC en 0
-}
-
-void DyC_empiece_ADC(int8_t *banderaADC)
-{
-	ADCSRA |= 0b01000000; //inicia la conversión (1 << ADSC)
-	*banderaADC= 1;       //Levanta la banderaADC
 }
 
 short leaADC(){
