@@ -31,9 +31,9 @@ short leaADC(){
 	return adcval;
 }
 
-void DyC_Procese_ADC(short SALIDA, coef_iir_2_ord *ir, long *sal, float *saliir){
+void DyC_Procese_ADC(short SALIDA, coef_iir_2_ord *ir, long *sal, float *saliir2){
 	short adcval= leaADC();                     //Lectura del ADC
-	void DyC_Filtrar(SALIDA, adcval, &ir, &sal, &saliir);
+	void DyC_Filtrar(SALIDA, adcval, &ir, &sal, &saliir2);
 }
 
 void DyC_Filtrar(short SALIDA, short adcval, coef_iir_2_ord *ir, long *sal, float *saliir2 ){
