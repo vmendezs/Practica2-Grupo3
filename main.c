@@ -15,15 +15,13 @@ uint8_t banderaADC=0;
 // espacio de memoria del main.
 
 short SALIDA FIR1 // Seleccione FIR1,FIR2,FIR3, o IIR ver funciones.h
-
-/*****Variables globales del filtro IIR*****/
-coef_iir_2_ord ir; /*esta estructura debe ser global y se va a pasar por referencia a la funcion que la inicializa*/
-
 long sal;
 float saliir2;
 
 void main (void)
 {
+    /*****Variables globales del filtro IIR*****/
+    coef_iir_2_ord ir; /*esta estructura debe ser global y se va a pasar por referencia a la funcion que la inicializa*/
     Tm_Periodico sondeoADC,sondeoDisplay;
     // suponemos que int8_t es un typedef de char entero con sigo de 8 bits
     uint16_t ubrr=103;      //valor para conseguir los 9600 baudios
