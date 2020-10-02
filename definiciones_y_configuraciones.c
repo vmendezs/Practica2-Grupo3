@@ -23,7 +23,8 @@ void DyC_Procese_ADC(short SALIDA, coef_iir_2_ord *ir, long *sal, float *saliir)
 	void DyC_Filtrar(SALIDA, adcval, &ir, &sal, &saliir);
 }
 
-void DyC_Filtrar(short SALIDA, short adcval, coef_iir_2_ord *ir, long *sal, float *saliir ){
+void DyC_Filtrar(short SALIDA, short adcval, coef_iir_2_ord *ir, long *sal, float *saliir2 ){
+    float saliir1; 
     switch (SALIDA)
     {
       case FIR1:
@@ -36,7 +37,10 @@ void DyC_Filtrar(short SALIDA, short adcval, coef_iir_2_ord *ir, long *sal, floa
         sal = filtrarFIR3((int)adcval);
         break;
       case IIR:
-        saliir = filtrarIIR((float)adcval, &ir);
+        inicializar_iir_2_ord(num_Section1, den_Section1, w, &ir);
+        saliir1 = filtrarIIR((float)adcval, &ir);
+        inicializar_iir_2_ord(num_Section2, den_Section2, w, &ir);
+        saliir2 = filtrarIIR(saliir1, &ir);
         break;
     }
 }
