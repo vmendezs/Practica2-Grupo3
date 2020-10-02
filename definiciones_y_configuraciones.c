@@ -2,6 +2,19 @@
 #include "definiciones_y_configuraciones.h"
 #include <avr/io.h>
 
+//Coeficientes IIR PASA-BANDAS Fs=100 y corte en 25Hz (Entre 22Hz y 28Hz) @ 3dB
+float num_Section1[3] = { 1, -0.000000000000000124672979561347551519246, 1}; //Numerador Seccion 1
+float den_Section1[3] = {1, 0.2381868958, 0.7661067247}; //Denominador Seccion 1
+float num_Section2[3] = { 1, -0.000000000000000124672979561347551519246, 1}; //Numerador Seccion 2
+float den_Section2[3] = {1, -0.2381868958, 0.7661067247}; //Denominador Seccion 2
+float w[3] = {0, 0, 0};// condición inicial punto intermedio,  por defecto para ejemplo {0, 0, 0}
+
+// //Coeficientes IIR PASO-BAJOS y IIR PASO-ALTOS Fs=100 y corte en 10Hz @ 3dB
+// float num_Section1[3] = { 1, 2, 1}; //Numerador Seccion 1
+// float den_Section1[3] = {1, -1.320913434, 0.6327387691}; //Denominador Seccion 1
+// float num_Section2[3] = { 1, 2, 1}; //Numerador Seccion 2
+// float den_Section2[3] = {1, -1.048599601, 0.296140343}; //Denominador Seccion 2
+
 void DyC_inicialice_ADC()
 {
 	ADMUX = 0x00;

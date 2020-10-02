@@ -33,26 +33,6 @@ void main (void)
     T_inicie_timer();                  //inicializa los timers 0 y 1
     DyC_inicialice_ADC();   //inicializa el ADC
 
-    // /*el filtro que se pone acá es un Butter con Fs en 100 y corte en 5Hz @ 3dB*/
-    // float num[3] = {0.02008336596190929412841796875,0.0401667319238185882568359375,0.02008336596190929412841796875}; // ponga aquí su numerador, por defecto para ejemplo un oscilador sería: {1.0, -2.0, 1.0}
-    // float den[3] = {1,-1.56101810932159423828125,0.641351521015167236328125}; // ponga aquí su denominador, por defecto para ejemplo                       {1,   0, -1}
-    // float w[3] = {0, 0, 0};// condición inicial punto intermedio,  por defecto para ejemplo                   {0, 0, 0}
-    //  inicializar_iir_2_ord(num, den, w, &ir);
-
-    //Coeficientes IIR PASA-BANDAS Fs=100 y corte en 25Hz (Entre 22Hz y 28Hz) @ 3dB
-    float num_Section1[3] = { 1, -0.000000000000000124672979561347551519246, 1}; //Numerador Seccion 1
-    float den_Section1[3] = {1, 0.2381868958, 0.7661067247}; //Denominador Seccion 1
-    float num_Section2[3] = { 1, -0.000000000000000124672979561347551519246, 1}; //Numerador Seccion 2
-    float den_Section2[3] = {1, -0.2381868958, 0.7661067247}; //Denominador Seccion 2
-    float w[3] = {0, 0, 0};// condición inicial punto intermedio,  por defecto para ejemplo {0, 0, 0}
-    
-    // //Coeficientes IIR PASO-BAJOS y IIR PASO-ALTOS Fs=100 y corte en 10Hz @ 3dB
-    // float num_Section1[3] = { 1, 2, 1}; //Numerador Seccion 1
-    // float den_Section1[3] = {1, -1.320913434, 0.6327387691}; //Denominador Seccion 1
-    // float num_Section2[3] = { 1, 2, 1}; //Numerador Seccion 2
-    // float den_Section2[3] = {1, -1.048599601, 0.296140343}; //Denominador Seccion 2
-
-
     for(;;)
     {
         //loop(..);
