@@ -14,7 +14,7 @@ uint8_t banderaADC=0;
 // si vamos a trabajar por interrupción o deberia estar en el
 // espacio de memoria del main.
 
-short SALIDA FIR1 // Seleccione FIR1,FIR2,FIR3, o IIR ver funciones.h
+short SALIDA FIR // Seleccione FIR o IIR ver funciones.h
 long sal;
 float saliir2;
 
