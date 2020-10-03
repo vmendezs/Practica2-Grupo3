@@ -30,16 +30,20 @@ void main (void)
     float den_Section1[3] = {1, 0.2381868958, 0.7661067247}; //Denominador Seccion 1
     float num_Section2[3] = { 1, -0.000000000000000124672979561347551519246, 1}; //Numerador Seccion 2
     float den_Section2[3] = {1, -0.2381868958, 0.7661067247}; //Denominador Seccion 2
-    float w[3] = {0, 0, 0};// condición inicial punto intermedio,  por defecto para ejemplo {0, 0, 0}
+    float w1[3] = {0.8749856949, 0, 0};// Ganancia Seccion 1
+    float w2[3] = {0.8749856949, 0, 0};// Ganancia Seccion 2
 
     // //Coeficientes IIR PASO-BAJOS y IIR PASO-ALTOS Fs=100 y corte en 10Hz @ 3dB
     // float num_Section1[3] = { 1, 2, 1}; //Numerador Seccion 1
     // float den_Section1[3] = {1, -1.320913434, 0.6327387691}; //Denominador Seccion 1
     // float num_Section2[3] = { 1, 2, 1}; //Numerador Seccion 2
     // float den_Section2[3] = {1, -1.048599601, 0.296140343}; //Denominador Seccion 2
+    // float w1[3] = {0.07795634121, 0, 0};// Ganancia Seccion 1
+    // float w1[3] = {0.07795634121, 0, 0};// Ganancia Seccion 1
 
-    inicializar_iir_2_ord(num_Section1, den_Section1, w, &ir1);
-    inicializar_iir_2_ord(num_Section2, den_Section2, w, &ir2);
+
+    inicializar_iir_2_ord(&num_Section1, &den_Section1, &w1, &ir1);
+    inicializar_iir_2_ord(&num_Section2, &den_Section2, &w2, &ir2);
     Su_inicie_uart(ubrr);     //inicializa el uart
     T_inicie_timer();                  //inicializa los timers 0 y 1
     DyC_inicialice_ADC();   //inicializa el ADC
