@@ -27,14 +27,8 @@ void DyC_Filtrar(short SALIDA, short adcval, coef_iir_2_ord *ir1, coef_iir_2_ord
     float saliir1; 
     switch (SALIDA)
     {
-      case FIR1:
-        sal = filtrarFIR1((int)adcval);
-        break;
-      case FIR2:
-        sal = filtrarFIR2((int)adcval);
-        break;
-      case FIR3:
-        sal = filtrarFIR3((int)adcval);
+      case FIR:
+        sal = filtrarFIR((int)adcval);
         break;
       case IIR:
         saliir1 = filtrarIIR((float)adcval, &ir1);
