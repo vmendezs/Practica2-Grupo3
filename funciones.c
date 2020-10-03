@@ -7,26 +7,26 @@
 
 ///////////COEFICIENTES PARA FILTRO FIR//////////////////
 //FIR ORDEN 7
-#define BL = 8
+#define BL 8
 const int8_t B[8] = {
       2,   14,   42,   70,   70,   42,   14,    2
 };
 
 // //FIR ORDEN 11
-// #define BL = 12
+// #define BL 12
 // const int8_T B[12] = {
 //       0,    0,    2,   14,   42,   70,   70,   42,   14,    2,    0,    0
 // };
 
 // //FIR ORDEN 17
-// #define BL = 18
+// #define BL 18
 // const int8_T B[18] = {
 //       0,    0,    0,    0,    0,    2,   14,   42,   72,   72,   42,   14,
 //       2,    0,    0,    0,    0,    0
 // };
 
 // //FIR ORDEN 30
-// #define BL = 31
+// #define BL 31
 // const int8_T B[31] = {
 //       0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
 //       6,   26,   58,   76,   58,   26,    6,    0,    0,    0,    0,    0,
