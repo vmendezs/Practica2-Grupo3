@@ -15,8 +15,8 @@ extern "C" {
 	/*suponemos que short es un entero de 16 bit con signo*/
 	void DyC_inicialice_ADC(void);
 	short leaADC(void);
-	void DyC_Procese_ADC(short SALIDA, coef_iir_2_ord *ir, long *sal, float *saliir2);
-	void DyC_Filtrar(short SALIDA, short adcval, coef_iir_2_ord *ir, long *sal, float *saliir2 );
+	void DyC_Procese_ADC(short SALIDA, coef_iir_2_ord *ir1, coef_iir_2_ord *ir2, long *sal, float *saliir2);
+	void DyC_Filtrar(short SALIDA, short adcval, coef_iir_2_ord *ir1, coef_iir_2_ord *ir2, long *sal, float *saliir2 );
 	#ifdef __cplusplus
 } // extern "C"
 #endif

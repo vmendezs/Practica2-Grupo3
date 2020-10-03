@@ -21,12 +21,25 @@ float saliir2;
 void main (void)
 {
     /*****Variables globales del filtro IIR*****/
-    coef_iir_2_ord ir; /*esta estructura debe ser global y se va a pasar por referencia a la funcion que la inicializa*/
+    coef_iir_2_ord ir1, ir2; /*esta estructura debe ser global y se va a pasar por referencia a la funcion que la inicializa*/
     Tm_Periodico sondeoADC,sondeoDisplay;
     // suponemos que int8_t es un typedef de char entero con sigo de 8 bits
     uint16_t ubrr=103;      //valor para conseguir los 9600 baudios
-    Tm_Inicie_periodico (&sondeoADC,TIEMPOADC);           // iniciar periodico de ADC
-    Tm_Inicie_periodico (&sondeoDisplay,TIEMPODISPLAY);   // iniciar periodico de Display
+    //Coeficientes IIR PASA-BANDAS Fs=100 y corte en 25Hz (Entre 22Hz y 28Hz) @ 3dB
+    float num_Section1[3] = { 1, -0.000000000000000124672979561347551519246, 1}; //Numerador Seccion 1
+    float den_Section1[3] = {1, 0.2381868958, 0.7661067247}; //Denominador Seccion 1
+    float num_Section2[3] = { 1, -0.000000000000000124672979561347551519246, 1}; //Numerador Seccion 2
+    float den_Section2[3] = {1, -0.2381868958, 0.7661067247}; //Denominador Seccion 2
+    float w[3] = {0, 0, 0};// condición inicial punto intermedio,  por defecto para ejemplo {0, 0, 0}
+
+    // //Coeficientes IIR PASO-BAJOS y IIR PASO-ALTOS Fs=100 y corte en 10Hz @ 3dB
+    // float num_Section1[3] = { 1, 2, 1}; //Numerador Seccion 1
+    // float den_Section1[3] = {1, -1.320913434, 0.6327387691}; //Denominador Seccion 1
+    // float num_Section2[3] = { 1, 2, 1}; //Numerador Seccion 2
+    // float den_Section2[3] = {1, -1.048599601, 0.296140343}; //Denominador Seccion 2
+
+    inicializar_iir_2_ord(num_Section1, den_Section1, w, &ir1);
+    inicializar_iir_2_ord(num_Section2, den_Section2, w, &ir2);
     Su_inicie_uart(ubrr);     //inicializa el uart
     T_inicie_timer();                  //inicializa los timers 0 y 1
     DyC_inicialice_ADC();   //inicializa el ADC
@@ -45,7 +58,7 @@ void main (void)
         if(banderaADC)// Interrupción lea ADC
         {
             banderaADC=0;
-            DyC_Procese_ADC(SALIDA, &ir, &sal, &saliir2);
+            DyC_Procese_ADC(SALIDA, &ir1, &ir2, &sal, &saliir2);
             /*en este lugar leemos el ADC y convertimos el valor leido a 
              grados y a unidades y decenas para el display
             */
