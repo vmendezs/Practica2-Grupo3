@@ -2,16 +2,12 @@
 #define FUNCIONES_H
 
 
-#define FIR1 1
-#define FIR2 2
-#define FIR3 3
-#define IIR 4
+#define FIR 1
+#define IIR 2
 
 /*INICIAN FUNCIONES DE EJEMPLO FILTROS FIR*/
 
-long filtrarFIR1(int in);
-long filtrarFIR2(int in);
-long filtrarFIR3(int in);
+long filtrarFIR(int in);
 
 /*Parametros del filtro IIR*/
 
