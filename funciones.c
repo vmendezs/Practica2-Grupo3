@@ -41,46 +41,130 @@ volatile int x[BL];
 volatile int k=0;
 
 /*Funcion del filtro FIR*/
-long filtrarFIR(int in)
+long filtrarFIR1(int in)
 {
-  int i = 0;
-  x[k] = (int)in; //Señal de entrada asignada al vector
-  long y = 0; //Valor de salida del filtro
+  int i = 1;
+  x[k] = (int)in;
+  long y = 0;
+  for (i = 1; i <= BL; i++) // NOTA, DEBE INICIAR EN 1. EJERCICIO: haga una prueba de escritorio con una respuesta impulso y compruebe...
+  {
+    y += (long)B[i - 1] * (long)x[(i + k) % BL]; // verifique que para su filtro no exista overflow.
+  }
 
-  //Para verificar si el vector es par
-  if((BL%2) == 0)
-  {
-    for (i = 0; i < (BL/2); i++) //Se recorre el vector de coeficientes hasta la mitad
-    {
-      y += ((long)B[i]) * ((long)x[i] + (long)x[BL-i]); // verifique que para su filtro no exista overflow.
-    }
-  }
-  else //Como el vector es impar entra aquí
-  {
-    for (i = 0; i < (BL/2) ; i++) //Se recorre el vector de coeficientes hasta la mitad + 1
-    {
-      y += ((long)B[i]) * ((long)x[i] + (long)x[BL-i]); // verifique que para su filtro no exista overflow.
-    }
-      y += ((long)B[(BL/2)+1]) * ((long)x[(BL/2)+1]); // Se obtiene el valor de la mitad del vector que esta solito :c
-  }
-  return y ; //si no es multiplo de 2^n divida por el factor de normalización adecuado a su filtro.
+  k = (k + 1) % BL;
+  return y>>8 ; //si no es multiplo de 2^n divida por el factor de normalización adecuado a su filtro.
 }
 
-/*Filtro de Pacho*/
-// long filtrarFIR1(int in)
+long filtrarFIR2(int in)
+{
+  int i = 0;
+  x[k] = in;
+  int inx = k;
+  long y = 0;
+  for (i = 0; i < BL; ++i) {
+    y += (long)x[inx] * (long)B[i];// verifique que para su filtro no exista overflow.
+    inx = inx != 0 ? inx - 1 : BL - 1;
+  }
+  k++;
+  k = (k >= BL) ? 0 : k;
+  return y >> 8; //si no es multiplo de 2^n divida por el factor de normalización adecuado a su filtro.
+
+}
+
+long filtrarFIR3(int in)
+{
+  int i = 0;
+  x[k] = in;
+  int inx = k;
+  char *apuntadorcoef = &B[0];
+  int *apuntadorarrc = &x[inx];
+  // mucho cuidado con el tamaño de los apuntadores DEBE COINCIDIR CON EL DEL ARREGLO o no va a funcionar.
+  
+  long y = 0;
+  for (i = 0; i < BL; ++i) {
+    y += (long)(*apuntadorarrc) * (long)(*apuntadorcoef);// verifique que para su filtro no exista overflow.
+    apuntadorcoef++;
+    if (inx != 0) {
+      apuntadorarrc--;
+      inx--;
+    }
+    else {
+      apuntadorarrc = &x[BL - 1];
+      inx = BL - 1;
+    }
+  }
+  k++;
+  k = (k >= BL) ? 0 : k;
+  return y>>8 ; //si no es multiplo de 2^n divida por el factor de normalización adecuado a su filtro.
+}
+
+long filtrarFIR_Optimizado(int in) //Implementación de FIR3 con la mitad de los coeficientes
+{
+  int i = 0;  //Variable que recorre posiciones del vector de salida
+  x[k] = in; //Señal de entrada asignada al vector
+  int inx = k; //Inicializa posiciones de vector de señal de entrada
+  char *apuntadorcoef = &B[0]; //Apuntador a vector de coeficientes de FIR
+  int *apuntadorin = &x[inx]; //Apuntador de la posición inicial de señal
+  int *apuntadoroffset = &x[BL - 1 - inx] //Apuntador de la posición de offset del vector de la señal
+  // mucho cuidado con el tamaño de los apuntadores DEBE COINCIDIR CON EL DEL ARREGLO o no va a funcionar.
+  
+  long y = 0;
+  for (i = 0; i < (BL/2); i++)
+  {
+    y += (long)(*apuntadorcoef) * ((long)(*apuntadorin) + (long)(*apuntadoroffset)) // verifique que para su filtro no exista overflow.
+    apuntadorcoef++;
+    if (inx > (BL/2))
+    {
+      apuntadorin--;
+      apuntadoroffset++;
+      inx--;
+    }
+    else
+    {
+      apuntadorin = &x[BL - 1];
+      apuntadoroffset = &x[0];
+      inx = BL - 1;
+    }
+  }
+  k++;
+  k = (k >= BL) ? 0 : k;
+
+  //Verificación de si el vector es par o impar
+  if((BL%2) == 0) //Si es par se retorna la salida
+  {
+    return y>>8; //si no es multiplo de 2^n divida por el factor de normalización adecuado a su filtro.
+  }
+  else //Si es impar se le suma a la salida (y) el factor faltante de la mitad y se retorna su valor
+  {
+    y += ((long)B[(BL/2)+1]) * ((long)x[(BL/2)+1]); // Se obtiene el valor de la mitad del vector que esta solito :c
+    return y>>8 ; //si no es multiplo de 2^n divida por el factor de normalización adecuado a su filtro.
+  }
+}
+
+/* fILTRO FIR1 CON OPTIMIZACION*/
 // {
-//   int i = 1;
-//   x[k] = (int)in;
-//   long y = 0;
-//   for (i = 1; i <= BL; i++) // NOTA, DEBE INICIAR EN 1. EJERCICIO: haga una prueba de escritorio con una respuesta impulso y compruebe...
+//   int i = 0;
+//   x[k] = (int)in; 
+//   long y = 0; //Valor de salida del filtro
+
+//   //Para verificar si el vector es par
+//   if((BL%2) == 0)
 //   {
-//     y += (long)B[i - 1] * (long)x[(i + k) % BL]; // verifique que para su filtro no exista overflow.
+//     for (i = 0; i < (BL/2); i++) //Se recorre el vector de coeficientes hasta la mitad
+//     {
+//       y += ((long)B[i]) * ((long)x[i] + (long)x[BL-1-i]); // verifique que para su filtro no exista overflow.
+//     }
 //   }
-
-//   k = (k + 1) % BL;
-//   return y>>8 ; //si no es multiplo de 2^n divida por el factor de normalización adecuado a su filtro.
+//   else //Como el vector es impar entra aquí
+//   {
+//     for (i = 0; i < (BL/2) ; i++) //Se recorre el vector de coeficientes hasta la mitad + 1
+//     {
+//       y += ((long)B[i]) * ((long)x[i] + (long)x[BL-1-i]); // verifique que para su filtro no exista overflow.
+//     }
+//       y += ((long)B[(BL/2)+1]) * ((long)x[(BL/2)+1]); // Se obtiene el valor de la mitad del vector que esta solito :c
+//   }
+//   return y ; //si no es multiplo de 2^n divida por el factor de normalización adecuado a su filtro.
 // }
-
 
 /*Funciones del filtro IIR*/
 
