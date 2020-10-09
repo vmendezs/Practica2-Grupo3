@@ -2,7 +2,6 @@
 #include <avr/io.h>
 #include <avr/power.h>
 #include <avr/sleep.h>
-#include "Consumo.h"
 
 void Su_inicie_uart(uint16_t ubrr)
 {

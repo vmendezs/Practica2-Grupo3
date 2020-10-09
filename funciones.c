@@ -1,16 +1,16 @@
 #include "funciones.h"
 
-//#define BL 8 EJEMPLO
-//const char B[BL] = {
-//      0,   16,   48,   64,   64,   48,   16,    0
-//};
+#define BL 8
+const char B[BL] = {
+      0,   16,   48,   64,   64,   48,   16,    0
+};
 
 ///////////COEFICIENTES PARA FILTRO FIR//////////////////
 //FIR ORDEN 7
-#define BL 8 //Longitud del vector de coeficientes
-const int8_t B[8] = {
+/*#define BL 8 //Longitud del vector de coeficientes
+const char B[8] = {
       2,   14,   42,   70,   70,   42,   14,    2
-};
+};*/
 
 // //FIR ORDEN 11
 // #define BL 12
@@ -105,15 +105,19 @@ long filtrarFIR_Optimizado(int in) //Implementación de FIR3 con la mitad de los
   int inx = k; //Inicializa posiciones de vector de señal de entrada
   char *apuntadorcoef = &B[0]; //Apuntador a vector de coeficientes de FIR
   int *apuntadorin = &x[inx]; //Apuntador de la posición inicial de señal
-  int *apuntadoroffset = &x[BL - 1 - inx] //Apuntador de la posición de offset del vector de la señal
+  int *apuntadoroffset = inx; //Apuntador de la posición de offset del vector de la señal
   // mucho cuidado con el tamaño de los apuntadores DEBE COINCIDIR CON EL DEL ARREGLO o no va a funcionar.
-  
+  long Buffer[BL]; //Registro de corrimiento 
+  for ( i = BL-1; i > 0; i = i-1 ){
+    Buffer[i] = Buffer[i-1];
+  }
+  Buffer[0] = in;
   long y = 0;
   for (i = 0; i < (BL/2); i++)
   {
-    y += (long)(*apuntadorcoef) * ((long)(*apuntadorin) + (long)(*apuntadoroffset)) // verifique que para su filtro no exista overflow.
+    y += ((long)(*apuntadorcoef) * ((long)(*apuntadorin) + (long)(Buffer[BL-i-1]))); // verifique que para su filtro no exista overflow.
     apuntadorcoef++;
-    if (inx > (BL/2))
+    if (inx != 0)
     {
       apuntadorin--;
       apuntadoroffset++;
@@ -123,7 +127,7 @@ long filtrarFIR_Optimizado(int in) //Implementación de FIR3 con la mitad de los
     {
       apuntadorin = &x[BL - 1];
       apuntadoroffset = &x[0];
-      inx = BL - 1;
+      inx = (BL/2) ;
     }
   }
   k++;
