@@ -51,7 +51,7 @@ void main (void)
     for(;;)
     {
         //loop(..);
-        if(banderaMili)// supongamos que tenemos un timer por hardware de 1 ms
+        if(banderaMili)// supongamos que tenemos un timer por hardware de 10 ms
         {
             banderaMili=0;
             //reseteamos el timer
@@ -63,8 +63,9 @@ void main (void)
         {
             banderaADC=0;
             DyC_Procese_ADC(SALIDA, &ir1, &ir2, &sal, &saliir2);
-            /*en este lugar leemos el ADC y convertimos el valor leido a 
-             grados y a unidades y decenas para el display
+            /*en este lugar leemos el ADC y convertimos el valor leido  
+              de la señal en valores de 0 a 255, se aplica el filtro FIR o IIR
+              y se obtiene como &sal de FIR o &saliir2 del FIR
             */
         }
         
