@@ -1,6 +1,7 @@
 #if !defined(DEFYCONF_H)
 #define DEFYCONF_H
 #include <avr/io.h>
+#include <avr/interrupt.h>
 
 #define TIEMPOADC 1000  //Tiempo en el que se procesa el ADC
 #define TIEMPODISPLAY 2 //Tiempo en el que se prcesa el display
